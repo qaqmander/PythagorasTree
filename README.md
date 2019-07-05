@@ -12,4 +12,4 @@ Use coroutine to simulate scheduler with rr algorithm because turtle doesn't sup
 
 Maybe each edge should cost same time in one step... But who cares?
 
-Bad code style especially in generator definition because I haven't find good solution for it. Miss macro in C so much :(s 
+Bad code style especially in generator definition because I haven't find good solution for it. It can't work if using traditional function to wrap `yield` obviously. Miss macro in C so much :( 
