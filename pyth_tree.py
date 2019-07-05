@@ -5,7 +5,7 @@ import turtle
 from math import atan, pi, sqrt
 from functools import reduce
 
-class coroutine():
+class coroutine():    # to wrap generator with `isalive` and `result`
     def __init__(self, _routine):
         self._routine = _routine
         self._isalive = True
@@ -34,7 +34,7 @@ class scheduler():
                 routine = self._routine_ls[i]
                 if routine.isalive():
                     routine.send(None)
-                    if routine.isalive():
+                    if routine.isalive():    # maybe this is harmful for efficience
                         flag = True
         self.result = []
         for routine in self._routine_ls:
@@ -46,6 +46,7 @@ class scheduler():
 def div(a, b):
     k = int(a) // b
     return k, a - k * b
+# parameterize the step, which makes it easier to adjust speed
 step_l = 3
 step_a = 13
 
@@ -118,6 +119,7 @@ def coroutine_triangle(pen, a, pencolor):
     yield [(ret1, a * l_k), (ret2, a * r_k)]
 
 if __name__ == '__main__':
+    normal_color = 'brown'
     end_color = 'green'
     start_pos = (10, -230)
     all_size = 100
@@ -129,8 +131,8 @@ if __name__ == '__main__':
     turtle.bgcolor('white')
     
     ini_pen = turtle.Pen()
-    ini_pen.fillcolor('brown')
-    ini_pen.pencolor('brown')
+    ini_pen.fillcolor(normal_color)
+    ini_pen.pencolor(normal_color)
     ini_pen.up()
     ini_pen.setpos(start_pos)
     ini_pen.down()
@@ -139,7 +141,7 @@ if __name__ == '__main__':
     ini_pen.setheading(0) # heading east
 
     coroutine_ls = [coroutine(
-        coroutine_square(ini_pen, all_size, 'brown'))
+        coroutine_square(ini_pen, all_size, normal_color))
     ]
     scher = scheduler(coroutine_ls)
     scher.run()
@@ -147,7 +149,7 @@ if __name__ == '__main__':
 
     for i in range(n):    # main loop
         for func in (coroutine_triangle, coroutine_square):
-            color = 'brown' if i < n - 1 else 'green'
+            color = normal_color if i < n - 1 else end_color
             coroutine_ls = []
             for pen, a in pen_list:
                 coroutine_ls.append(
@@ -155,7 +157,7 @@ if __name__ == '__main__':
                 )
             scher = scheduler(coroutine_ls)
             scher.run()
-            pen_list = reduce(
+            pen_list = reduce(    # to get pens in next turn
                 lambda x, y: x + y,
                 scher.get_result(),
                 []
