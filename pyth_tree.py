@@ -34,7 +34,7 @@ class scheduler():
                 routine = self._routine_ls[i]
                 if routine.isalive():
                     routine.send(None)
-                    if routine.isalive():    # maybe this is harmful for efficience
+                    if routine.isalive():    # maybe this is harmful for efficiency
                         flag = True
         self.result = []
         for routine in self._routine_ls:
